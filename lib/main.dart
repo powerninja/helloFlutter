@@ -49,33 +49,63 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //4. MyHomePageの画面を構築する部分
     return Scaffold(
-      // 画面上部のタイトル部分
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //画面の中央に表示されるテキスト
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            // テキストの下に表示されるカウンタ
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+        // 画面上部のタイトル部分
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text(widget.title),
         ),
-      ),
-      // 画面下部のボタン部分
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        body: Column(
+          children: [
+            const Text("HelloWorld"),
+            const Text("ハロワ"),
+            TextButton(
+              onPressed: () => print("ボタンが押下されたよ"),
+              child: const Text("テキストボタン"),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Icon(
+                  Icons.favorite,
+                  color: Colors.pink,
+                  size: 24.0,
+                ),
+                Icon(
+                  Icons.audiotrack,
+                  color: Colors.green,
+                  size: 30.0,
+                ),
+                Icon(
+                  Icons.beach_access,
+                  color: Colors.blue,
+                  size: 36.0,
+                )
+              ],
+            )
+          ],
+        )
+        // body: Center(
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: <Widget>[
+        //       //画面の中央に表示されるテキスト
+        //       const Text(
+        //         'You have pushed the button this many times:',
+        //       ),
+        //       // テキストの下に表示されるカウンタ
+        //       Text(
+        //         '$_counter',
+        //         style: Theme.of(context).textTheme.headlineMedium,
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // 画面下部のボタン部分
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _incrementCounter,
+        //   tooltip: 'Increment',
+        //   child: const Icon(Icons.add),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
