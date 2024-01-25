@@ -51,8 +51,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         // 画面上部のタイトル部分
         appBar: AppBar(
+          title: Row(
+            children: const [
+              Icon(Icons.create),
+              Text("初めてのFlutter"),
+            ],
+          ),
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
+          // title: Text(widget.title),
         ),
         body: Column(
           children: [
