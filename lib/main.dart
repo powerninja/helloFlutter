@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 //1. エントリーポイントのmain関数
 void main() {
@@ -62,25 +63,29 @@ class _MyHomePageState extends State<MyHomePage> {
         // title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //画面の中央に表示されるテキスト
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            // テキストの下に表示されるカウンタ
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            // Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red))
-            if (_counter % 2 == 0)
-              const Text(
-                '偶数です',
-                style: TextStyle(fontSize: 20, color: Colors.red),
-              )
-          ],
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: <Widget>[
+        //     //画面の中央に表示されるテキスト
+        //     const Text(
+        //       'You have pushed the button this many times:',
+        //     ),
+        //     // テキストの下に表示されるカウンタ
+        //     Text(
+        //       '$_counter',
+        //       style: Theme.of(context).textTheme.headlineMedium,
+        //     ),
+        //     // Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red))
+        //     if (_counter % 2 == 0)
+        //       const Text(
+        //         '偶数です',
+        //         style: TextStyle(fontSize: 20, color: Colors.red),
+        //       )
+        //   ],
+        // ),
+        child: Icon(
+          FontAwesomeIcons.gift,
+          color: Colors.teal,
         ),
       ),
       //画面下部のボタン部分
