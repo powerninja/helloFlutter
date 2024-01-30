@@ -103,9 +103,11 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             SizeTransition(
               //sizeFactorにAnimationControllerを指定することで操作が可能
               sizeFactor: _animationController,
+              //横を拡大、収縮させたい場合は下記を追加(縦はデフォルトのため記述不要)
+              axis: Axis.horizontal,
               child: Center(
                 child: SizedBox(
-                  width: 50,
+                  width: 300,
                   height: 50,
                   child: Container(color: Colors.green),
                 ),
