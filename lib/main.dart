@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -35,64 +35,94 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  bool _flag = false;
+//アニメーションを使用するためTickerProviderStateMixinを使用
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  //AnimationControllerをインスタンス化
+  //lateは非同期の初期化
+  late AnimationController _animationController;
 
-  _click() async {
+//実行
+  _forward() async {
     setState(() {
-      _flag = !_flag;
+      _animationController.forward();
     });
+  }
+
+//停止
+  _stop() async {
+    setState(() {
+      _animationController.stop();
+    });
+  }
+
+//逆再生
+  _reverse() async {
+    setState(() {
+      _animationController.reverse();
+    });
+  }
+
+  //生成
+  //読み込み時に読み込まれる(公式のメソッド)
+  @override
+  void initState() {
+    //親クラスが継承しているinitStateを実行する
+    super.initState();
+    //thisは現在のインスタンスを指している
+    _animationController =
+        AnimationController(vsync: this, duration: const Duration(seconds: 3));
+  }
+
+  //破棄
+  //ウィジェットが削除された際に動作する(公式のメソッド)
+  @override
+  void dispose() {
+    //インスタンス化したクラスと継承元のクラスから破棄する
+    //必ずインスタンス化したクラスから破棄する必要がある
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    //4. MyHomePageの画面を構築する部分
     return Scaffold(
-      // 画面上部のタイトル部分
-      appBar: AppBar(
-        title: Row(
-          children: const [
-            Icon(Icons.create),
-            Text("初めてのFlutter"),
-          ],
+        appBar: AppBar(
+          title: Row(
+            children: const [
+              Icon(Icons.create),
+              Text("初めてのFlutter"),
+            ],
+          ),
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         ),
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Center(
-          //Columnだと縦方向、rowだと横方向が主軸となる
-          child: Column(
-        // 主軸を元に各要素をどこにどのように配置するか指定する 今回は中央位置に配置
-        mainAxisAlignment: MainAxisAlignment.center,
-        //Widget型配列をchildrenに格納する
-        //今回はWidgetを複数使用するためchildrenとなっている
-        children: <Widget>[
-          //図形表示
-          AnimatedContainer(
-            //アニメーションの持続時間
-            duration: const Duration(seconds: 3),
-            width: _flag ? 100 : 50,
-            height: _flag ? 50 : 100,
-            //flagがfalseの場合、上下左右にpadding30を追加する
-            padding: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
-            //flagがfalseの場合、上下左右にmargin30を追加する
-            margin: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
-            //X軸方向の歪みを設定する
-            transform: _flag ? Matrix4.skewX(0.0) : Matrix4.skewX(0.3),
-            color: _flag ? Colors.blue : Colors.grey,
-          ),
-          AnimatedSwitcher(
-            //アニメーションの持続時間
-            duration: const Duration(seconds: 3),
-            child: _flag
-                ? const Text("何もない")
-                : const Icon(Icons.favorite, color: Colors.pink),
-          ),
-        ],
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _click(),
-        child: const Icon(Icons.add),
-      ),
-    );
+        body: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            //ウィジェットのサイズをアニメーション化するために使われるウィジェット
+            SizeTransition(
+              //sizeFactorにAnimationControllerを指定することで操作が可能
+              sizeFactor: _animationController,
+              child: Center(
+                child: SizedBox(
+                  width: 50,
+                  height: 50,
+                  child: Container(color: Colors.green),
+                ),
+              ),
+            )
+          ],
+        )),
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FloatingActionButton(
+                onPressed: _forward, child: const Icon(Icons.arrow_forward)),
+            FloatingActionButton(
+                onPressed: _stop, child: const Icon(Icons.pause)),
+            FloatingActionButton(
+                onPressed: _reverse, child: const Icon(Icons.arrow_back))
+          ],
+        ));
   }
 }
