@@ -66,32 +66,27 @@ class _MyHomePageState extends State<MyHomePage> {
         //Widget型配列をchildrenに格納する
         //今回はWidgetを複数使用するためchildrenとなっている
         children: <Widget>[
-          //消える文字という文言の透過度を指定してる
-          AnimatedOpacity(
-              opacity: _flag ? 0.1 : 1.0,
-              //アニメーションの持続時間
-              duration: const Duration(seconds: 3),
-              child: Text(
-                "消える文字",
-                style: Theme.of(context).textTheme.headline4,
-              )),
-          AnimatedSize(
-              //アニメーションの持続時間
-              duration: const Duration(seconds: 3),
-              //サイズをフラグによって変更する
-              child: SizedBox(
-                width: _flag ? 50 : 200,
-                height: _flag ? 50 : 200,
-                child: Container(color: Colors.purple),
-              )),
-          AnimatedAlign(
-              alignment: _flag ? Alignment.topLeft : Alignment.bottomRight,
-              duration: const Duration(seconds: 3),
-              child: SizedBox(
-                width: 50,
-                height: 50,
-                child: Container(color: Colors.green),
-              ))
+          //図形表示
+          AnimatedContainer(
+            //アニメーションの持続時間
+            duration: const Duration(seconds: 3),
+            width: _flag ? 100 : 50,
+            height: _flag ? 50 : 100,
+            //flagがfalseの場合、上下左右にpadding30を追加する
+            padding: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
+            //flagがfalseの場合、上下左右にmargin30を追加する
+            margin: _flag ? const EdgeInsets.all(0) : const EdgeInsets.all(30),
+            //X軸方向の歪みを設定する
+            transform: _flag ? Matrix4.skewX(0.0) : Matrix4.skewX(0.3),
+            color: _flag ? Colors.blue : Colors.grey,
+          ),
+          AnimatedSwitcher(
+            //アニメーションの持続時間
+            duration: const Duration(seconds: 3),
+            child: _flag
+                ? const Text("何もない")
+                : const Icon(Icons.favorite, color: Colors.pink),
+          ),
         ],
       )),
       floatingActionButton: FloatingActionButton(
