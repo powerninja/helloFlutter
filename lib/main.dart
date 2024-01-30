@@ -36,14 +36,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  // String _type = "偶数";
+  bool _flag = false;
 
-//5. カウンタが押された時のメソッド
-  void _incrementCounter() {
+  _click() async {
     setState(() {
-      _counter++;
-      // _counter % 2 == 0 ? _type = "偶数" : _type = "奇数";
+      _flag = !_flag;
     });
   }
 
@@ -60,40 +57,47 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // title: Text(widget.title),
       ),
       body: Center(
-        // child: Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: <Widget>[
-        //     //画面の中央に表示されるテキスト
-        //     const Text(
-        //       'You have pushed the button this many times:',
-        //     ),
-        //     // テキストの下に表示されるカウンタ
-        //     Text(
-        //       '$_counter',
-        //       style: Theme.of(context).textTheme.headlineMedium,
-        //     ),
-        //     // Text('$_type', style: TextStyle(fontSize: 20, color: Colors.red))
-        //     if (_counter % 2 == 0)
-        //       const Text(
-        //         '偶数です',
-        //         style: TextStyle(fontSize: 20, color: Colors.red),
-        //       )
-        //   ],
-        // ),
-        child: Icon(
-          FontAwesomeIcons.gift,
-          color: Colors.teal,
-        ),
-      ),
-      //画面下部のボタン部分
+          //Columnだと縦方向、rowだと横方向が主軸となる
+          child: Column(
+        // 主軸を元に各要素をどこにどのように配置するか指定する 今回は中央位置に配置
+        mainAxisAlignment: MainAxisAlignment.center,
+        //Widget型配列をchildrenに格納する
+        //今回はWidgetを複数使用するためchildrenとなっている
+        children: <Widget>[
+          //消える文字という文言の透過度を指定してる
+          AnimatedOpacity(
+              opacity: _flag ? 0.1 : 1.0,
+              //アニメーションの持続時間
+              duration: const Duration(seconds: 3),
+              child: Text(
+                "消える文字",
+                style: Theme.of(context).textTheme.headline4,
+              )),
+          AnimatedSize(
+              //アニメーションの持続時間
+              duration: const Duration(seconds: 3),
+              //サイズをフラグによって変更する
+              child: SizedBox(
+                width: _flag ? 50 : 200,
+                height: _flag ? 50 : 200,
+                child: Container(color: Colors.purple),
+              )),
+          AnimatedAlign(
+              alignment: _flag ? Alignment.topLeft : Alignment.bottomRight,
+              duration: const Duration(seconds: 3),
+              child: SizedBox(
+                width: 50,
+                height: 50,
+                child: Container(color: Colors.green),
+              ))
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        onPressed: () => _click(),
         child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 }
