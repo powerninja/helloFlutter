@@ -39,7 +39,20 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   //AnimationControllerをインスタンス化
   //lateは非同期の初期化
+  //アニメーションを開始、停止、逆再生などを制御
   late AnimationController _animationController;
+
+  //数値をアニメーションさせるためのオブジェクト
+  late Animation<double> _animationDouble;
+
+  //アニメーションの開始値と終了値を定義
+  //0.0から200.0までの値がアニメーションされる
+  final Tween<double> _tweenDouble = Tween(begin: 0.0, end: 200.0);
+
+  //色をアニメーションさせるためのオブジェクト
+  late Animation<Color?> _animationColor;
+  final ColorTween _tweenColor =
+      ColorTween(begin: Colors.green, end: Colors.blue);
 
 //実行
   _forward() async {
@@ -71,6 +84,19 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
     //thisは現在のインスタンスを指している
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
+
+    //TweenとAnimationControllerからAnimationを作る(サイズ)
+    _animationDouble = _tweenDouble.animate(_animationController);
+    //変更を反映させる
+    _animationDouble.addListener(() {
+      setState(() {});
+    });
+
+    //TweenとAnimationControllerからAnimationを作る(色)
+    _animationColor = _tweenColor.animate(_animationController);
+    _animationColor.addListener(() {
+      setState(() {});
+    });
   }
 
   //破棄
@@ -99,6 +125,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Text("AnimationController: ${_animationController.value}"),
+            Text("AnimationDouble: ${_animationDouble.value}"),
+            Text("AnimationColor: ${_animationColor.value}"),
             //ウィジェットのサイズをアニメーション化するために使われるウィジェット
             SizeTransition(
               //sizeFactorにAnimationControllerを指定することで操作が可能
@@ -107,9 +136,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
               axis: Axis.horizontal,
               child: Center(
                 child: SizedBox(
-                  width: 300,
-                  height: 50,
-                  child: Container(color: Colors.green),
+                  width: _animationDouble.value,
+                  height: _animationDouble.value,
+                  child: Container(color: _animationColor.value),
                 ),
               ),
             )
